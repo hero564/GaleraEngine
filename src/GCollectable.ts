@@ -1,9 +1,24 @@
 /// <reference path="./GCollection.ts" />
 
+/**
+ *Simple interface for child of GCollection
+ *
+ * @interface GCollectable
+ */
+interface GCollectable {
+  /**
+   *id of item in collection
+   *
+   * @type {number}
+   * @memberof GCollectable
+   */
+  id: number;
 
-interface GCollectable{
-
-    id: number
-    parrent: GCollection
-
+  /**
+   *Current collection
+   *
+   * @type {GCollection}
+   * @memberof GCollectable
+   */
+  parrent: GCollection;
 }

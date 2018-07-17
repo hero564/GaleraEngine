@@ -2,14 +2,13 @@ var GCollection = (function () {
     function GCollection() {
         this._childs = {};
         this._currentId = 0;
-        this._childs = new Object;
     }
     GCollection.prototype.add = function (child) {
         child.id = this._currentId;
         child.parrent = this;
         this._childs[this._currentId] = child;
         this._currentId += 1;
-        return this._currentId - 1;
+        return child.id;
     };
     GCollection.prototype.get = function (id) {
         if (this._childs[id] !== undefined) {
@@ -23,9 +22,9 @@ var GCollection = (function () {
         delete this._childs[id];
     };
     GCollection.prototype.each = function (handler) {
-        console.log(this._childs);
-        for (var id in this._childs.keys()) {
-            handler(this._childs[id], Number(id));
+        var keys = Object.keys(this._childs);
+        for (var i in Object.keys(this._childs)) {
+            handler(this._childs[Number(keys[i])], Number(this._childs[Number(keys[i])].id));
         }
     };
     GCollection.prototype.checkFreeIdOnRange = function (fromId, toId) {
@@ -43,6 +42,7 @@ var coll = new GCollection();
 for (var i = 1; i < 10; i++) {
     coll.add({ id: 0, parrent: undefined, numb: i });
 }
+coll.remove(6);
 coll.each(function (child, id) {
     console.log(child.numb, id);
 });
