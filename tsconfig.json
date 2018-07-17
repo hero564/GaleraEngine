@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "target": "es5",
+        "outFile": "dist/galera.js"
+    },
+    "files": [
+        "src/GCollectable.ts",
+        "src/GCollection.ts",
+        "example.ts"
+    ]
+}
