@@ -1,4 +1,7 @@
 /// <reference path="./GCollection.ts" />
+/// <reference path="./GLayerInstance.ts" />
+/// <reference path="./GCollectable.ts" />
+
 
 /**
  *Layer dor drawing things on canvas
@@ -82,6 +85,32 @@ class GLayer extends GCollection {
     this._ctx = this.canvas.getContext("2d");
   }
 
+
+  /**
+   * Ovverrided GCollection.add() function.
+   * Now need GLayerInstance as child
+   *
+   * @param {GLayerInstance} instance - layer instance for processing
+   * @returns {number}
+   * @memberof GLayer
+   */
+  add(instance: GLayerInstance): number{
+    //just call super method)
+    return super.add(instance);
+
+  }
+
+  /**
+   * Generate new canvas for layer.
+   * Call one time.
+   *
+   * @private
+   * @param {string} id - id of canvas
+   * @param {number} width - width of canvas
+   * @param {number} height - height of canvas
+   * @returns {HTMLCanvasElement} - new canvas
+   * @memberof GLayer
+   */
   private generateCanvas(
     id: string,
     width: number,
@@ -99,9 +128,44 @@ class GLayer extends GCollection {
     return canvas;
   }
 
-  draw(): void {}
+  /**
+   * Draw function. 
+   * Call every child draw() function.
+   * For drawing thisngs.
+   * Be true for calling this function after GLayer.update() or async
+   * 
+   *
+   * @memberof GLayer
+   */
+  draw(): void {
+    this.each((child, childId)=>{
+      
+      let currentInstance: GLayerInstance = <GLayerInstance>child;
 
-  update(): void {}
+      currentInstance.draw(this.ctx);
+    });
+  }
+
+  /**
+   * Update function.
+   * It for logic code.
+   * Be true for calling this function before GLayer.draw() or async
+   *
+   * @param {number} dTime - time after last calling
+   * @memberof GLayer
+   */
+  update(dTime: number): void {
+
+    this.each((child, childId)=>{
+      
+      let currentInstance: GLayerInstance = <GLayerInstance>child;
+
+      currentInstance.update(dTime);
+
+    });
+  }
+
+
   /**
    *Return root element
    *
