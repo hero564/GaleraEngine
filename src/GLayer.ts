@@ -59,6 +59,25 @@ class GLayer extends GCollection {
    */
   private _ctx: CanvasRenderingContext2D;
 
+  /**
+   * Camera X position on canvas
+   * Zero by default
+   * 
+   * @private
+   * @type {number}
+   * @memberof GLayer
+   */
+  private _viewX: number = 0;
+
+  /**
+   * Camera Y position on canvas
+   * Zero by default
+   * 
+   * @private
+   * @type {number}
+   * @memberof GLayer
+   */
+  private _viewY: number = 0;
 
   /**
    * If this flag is true, on each begining of draw cycle canvas will be cleared.
@@ -152,6 +171,10 @@ class GLayer extends GCollection {
     if(this.CLEAR_CANVAS_EACH_CYCLE){
       this.ctx.clearRect(0, 0, this.width, this.height);
     }
+
+    //positioning camera
+    this.ctx.translate(-this.viewX, -this.viewY);
+
     //draw each child instance of layer
     this.each((child, childId)=>{
       
@@ -273,5 +296,43 @@ class GLayer extends GCollection {
    */
   get ctx(): CanvasRenderingContext2D {
     return this._ctx;
+  }
+
+  /**
+   *Setter for camera view X position on canvas
+   *
+   * @memberof GLayer
+   */
+  set viewX(xpos: number){
+    this._viewX = xpos;
+  }
+
+  /**
+   *Getter for camera view X position on canvas
+   *
+   * @type {number}
+   * @memberof GLayer
+   */
+  get viewX():number{
+    return this._viewX;
+  }
+  
+  /**
+   * Setter for camera view Y positon on canvas
+   *
+   * @memberof GLayer
+   */
+  set viewY(ypos: number){
+    this._viewY = ypos;
+  }
+
+  /**
+   * Getter for camera view Y position on canvas
+   *
+   * @type {number}
+   * @memberof GLayer
+   */
+  get viewY(): number{
+    return this._viewY;
   }
 }

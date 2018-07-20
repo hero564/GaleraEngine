@@ -55,6 +55,9 @@ var GLayer = (function (_super) {
         if (width === void 0) { width = 300; }
         if (height === void 0) { height = 200; }
         var _this = _super.call(this) || this;
+        _this._viewX = 0;
+        _this._viewY = 0;
+        _this.CLEAR_CANVAS_EACH_CYCLE = false;
         _this._root = root;
         _this._id = id;
         _this._canvas = _this.generateCanvas(id, width, height);
@@ -74,6 +77,10 @@ var GLayer = (function (_super) {
     };
     GLayer.prototype.draw = function () {
         var _this = this;
+        if (this.CLEAR_CANVAS_EACH_CYCLE) {
+            this.ctx.clearRect(0, 0, this.width, this.height);
+        }
+        this.ctx.translate(-this.viewX, -this.viewY);
         this.each(function (child, childId) {
             var currentInstance = child;
             currentInstance.draw(_this.ctx);
@@ -143,13 +150,33 @@ var GLayer = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(GLayer.prototype, "viewX", {
+        get: function () {
+            return this._viewX;
+        },
+        set: function (xpos) {
+            this._viewX = xpos;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GLayer.prototype, "viewY", {
+        get: function () {
+            return this._viewY;
+        },
+        set: function (ypos) {
+            this._viewY = ypos;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return GLayer;
 }(GCollection));
 var coll = new GLayer(document.body, "gameLayer", 300, 300);
 var _loop_1 = function (i) {
     coll.add({
         update: function (dTime) {
-            console.log("updating ", this.id);
+            console.log("viewX ", this.parrent.viewX);
         },
         draw: function (ctx) {
             ctx.fillText(String(i), i * 32, 32);
@@ -159,6 +186,8 @@ var _loop_1 = function (i) {
 for (var i = 1; i < 10; i++) {
     _loop_1(i);
 }
+coll.viewX = 100;
+console.log(coll.viewX);
 coll.update(5);
 coll.draw();
 //# sourceMappingURL=galera.js.map
