@@ -1,3 +1,13 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var GCollection = (function () {
     function GCollection() {
         this._childs = {};
@@ -38,12 +48,117 @@ var GCollection = (function () {
     };
     return GCollection;
 }());
-var coll = new GCollection();
+var GLayer = (function (_super) {
+    __extends(GLayer, _super);
+    function GLayer(root, id, width, height) {
+        if (root === void 0) { root = document.body; }
+        if (width === void 0) { width = 300; }
+        if (height === void 0) { height = 200; }
+        var _this = _super.call(this) || this;
+        _this._root = root;
+        _this._id = id;
+        _this._canvas = _this.generateCanvas(id, width, height);
+        _this.root.appendChild(_this.canvas);
+        _this._ctx = _this.canvas.getContext("2d");
+        return _this;
+    }
+    GLayer.prototype.add = function (instance) {
+        return _super.prototype.add.call(this, instance);
+    };
+    GLayer.prototype.generateCanvas = function (id, width, height) {
+        var canvas = (document.createElement("canvas"));
+        canvas.id = id;
+        canvas.width = width;
+        canvas.height = height;
+        return canvas;
+    };
+    GLayer.prototype.draw = function () {
+        var _this = this;
+        this.each(function (child, childId) {
+            var currentInstance = child;
+            currentInstance.draw(_this.ctx);
+        });
+    };
+    GLayer.prototype.update = function (dTime) {
+        this.each(function (child, childId) {
+            var currentInstance = child;
+            currentInstance.update(dTime);
+        });
+    };
+    Object.defineProperty(GLayer.prototype, "root", {
+        get: function () {
+            return this._root;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GLayer.prototype, "width", {
+        get: function () {
+            return this._width;
+        },
+        set: function (newWidth) {
+            if (newWidth > 0) {
+                this._width = newWidth;
+            }
+            else {
+                console.error("GLayer.width - must be larger than 0(try set to " + newWidth + ")");
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GLayer.prototype, "height", {
+        get: function () {
+            return this._height;
+        },
+        set: function (newHeight) {
+            if (newHeight > 0) {
+                this._height = newHeight;
+            }
+            else {
+                console.error("GLayer.height - must be larger than 0(try set to " + newHeight + ")");
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GLayer.prototype, "id", {
+        get: function () {
+            return this._id;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GLayer.prototype, "canvas", {
+        get: function () {
+            return this._canvas;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GLayer.prototype, "ctx", {
+        get: function () {
+            return this._ctx;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return GLayer;
+}(GCollection));
+var coll = new GLayer(document.body, "gameLayer", 300, 300);
+var _loop_1 = function (i) {
+    coll.add({
+        update: function (dTime) {
+            console.log("updating ", this.id);
+        },
+        draw: function (ctx) {
+            ctx.fillText(String(i), i * 32, 32);
+        }
+    });
+};
 for (var i = 1; i < 10; i++) {
-    coll.add({ id: 0, parrent: undefined, numb: i });
+    _loop_1(i);
 }
-coll.remove(6);
-coll.each(function (child, id) {
-    console.log(child.numb, id);
-});
+coll.update(5);
+coll.draw();
 //# sourceMappingURL=galera.js.map

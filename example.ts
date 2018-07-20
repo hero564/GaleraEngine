@@ -1,14 +1,20 @@
 /// <reference path="./src/GCollection.ts" />
 /// <reference path="./src/GCollectable.ts" />
+/// <reference path="./src/GLayer.ts" />
+/// <reference path="./src/GLayerInstance.ts" />
 
-const coll: GCollection = new GCollection();
+
+
+const coll: GLayer = new GLayer(document.body, "gameLayer", 300, 300);
 
 for(let i = 1; i < 10; i++){
-    coll.add(<GCollectable>{id:0, parrent: undefined, numb: i})
+    coll.add(<GLayerInstance>{
+            update: function(dTime: number){
+                console.log("updating ",this.id);
+            },
+            draw: (ctx: CanvasRenderingContext2D)=>{
+            }
+        })
 }
-
-coll.remove(6);
-
-coll.each((child: any, id: number)=>{
-    console.log(child.numb, id);
-});
+coll.update(5);
+coll.draw();

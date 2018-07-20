@@ -59,6 +59,16 @@ class GLayer extends GCollection {
    */
   private _ctx: CanvasRenderingContext2D;
 
+
+  /**
+   * If this flag is true, on each begining of draw cycle canvas will be cleared.
+   * FALSE by default.
+   *
+   * @type {boolean}
+   * @memberof GLayer
+   */
+  public CLEAR_CANVAS_EACH_CYCLE: boolean = false;
+
   /**
    *Creates an instance of GLayer.
    * @param {HTMLElement} [root=document.body] - root element for layer. Body by default
@@ -138,6 +148,11 @@ class GLayer extends GCollection {
    * @memberof GLayer
    */
   draw(): void {
+    //clear canvas if flag is true
+    if(this.CLEAR_CANVAS_EACH_CYCLE){
+      this.ctx.clearRect(0, 0, this.width, this.height);
+    }
+    //draw each child instance of layer
     this.each((child, childId)=>{
       
       let currentInstance: GLayerInstance = <GLayerInstance>child;
@@ -156,8 +171,9 @@ class GLayer extends GCollection {
    */
   update(dTime: number): void {
 
+    //update each child instance of layer
     this.each((child, childId)=>{
-      
+
       let currentInstance: GLayerInstance = <GLayerInstance>child;
 
       currentInstance.update(dTime);
