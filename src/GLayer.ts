@@ -80,6 +80,25 @@ class GLayer extends GCollection {
   private _viewY: number = 0;
 
   /**
+   *Camera width
+   *
+   * @private
+   * @type {number}
+   * @memberof GLayer
+   */
+  private _viewWidth: number = 1;
+
+
+  /**
+   *Camera height
+   *
+   * @private
+   * @type {number}
+   * @memberof GLayer
+   */
+  private _viewHeight: number = 1;
+
+  /**
    * If this flag is true, on each begining of draw cycle canvas will be cleared.
    * FALSE by default.
    *
@@ -106,6 +125,13 @@ class GLayer extends GCollection {
 
     this._root = root;
     this._id = id;
+    this.viewWidth = width;
+    this.viewHeight = height;
+    this.width = width;
+    this.height = height;
+
+    console.log(this.viewWidth, this.viewHeight);
+
 
     //generate and put canvas to the root
     this._canvas = this.generateCanvas(id, width, height);
@@ -162,7 +188,7 @@ class GLayer extends GCollection {
    * Call every child draw() function.
    * For drawing thisngs.
    * Be true for calling this function after GLayer.update() or async
-   * 
+   *  TODO: Correct camera view scaling(compabiling with camera mooving)
    *
    * @memberof GLayer
    */
@@ -175,6 +201,17 @@ class GLayer extends GCollection {
     //positioning camera
     this.ctx.translate(-this.viewX, -this.viewY);
 
+    //scaling camera
+    this.ctx.save();
+    this.ctx.scale(this.width / this.viewWidth, this.height / this.viewHeight);
+
+    this.insideDraw();
+    
+    this.ctx.restore();
+    
+  }
+
+  insideDraw(): void{
     //draw each child instance of layer
     this.each((child, childId)=>{
       
@@ -334,5 +371,60 @@ class GLayer extends GCollection {
    */
   get viewY(): number{
     return this._viewY;
+  }
+
+  /**
+   * Camera width setter.
+   * Must be larger than 0.
+   * If smaller than 0, will be used Math.abs(newValue)
+   *
+   * @memberof GLayer
+   */
+  set viewWidth(wView: number){
+    //cant be smaller 0
+    let newWidth: number = Math.abs(wView);
+    //check on eq 0
+    if(newWidth > 0){
+      this._viewWidth = wView;
+    }else{
+      console.error(`Glayer.viewWidth - must be larger 0(try set to ${newWidth})`);
+    }
+  }
+
+  /**
+   * Camera width getter
+   *
+   * @memberof GLayer
+   */
+  get viewWidth(): number{
+    return this._viewWidth;
+  }
+
+  /**
+   * Camera height setter
+   * Must be larger than 0.
+   * If smaller than 0, will be used Math.abs(newValue)
+   *
+   * @memberof GLayer
+   */
+  set viewHeight(hView: number){
+    //cant be smaller 0
+    let newHeight: number = Math.abs(hView);
+    //check on eq 0
+    if(newHeight > 0){
+      this._viewHeight = hView;
+    }else{
+      console.error(`Glayer.viewHeight - must be larger 0(try set to ${newHeight})`);
+    }
+  }
+
+  /**
+   * Camera height getter
+   *
+   * @type {number}
+   * @memberof GLayer
+   */
+  get viewHeight(): number{
+    return this._viewHeight;
   }
 }

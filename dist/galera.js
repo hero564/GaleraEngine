@@ -57,9 +57,16 @@ var GLayer = (function (_super) {
         var _this = _super.call(this) || this;
         _this._viewX = 0;
         _this._viewY = 0;
+        _this._viewWidth = 1;
+        _this._viewHeight = 1;
         _this.CLEAR_CANVAS_EACH_CYCLE = false;
         _this._root = root;
         _this._id = id;
+        _this.viewWidth = width;
+        _this.viewHeight = height;
+        _this.width = width;
+        _this.height = height;
+        console.log(_this.viewWidth, _this.viewHeight);
         _this._canvas = _this.generateCanvas(id, width, height);
         _this.root.appendChild(_this.canvas);
         _this._ctx = _this.canvas.getContext("2d");
@@ -76,11 +83,17 @@ var GLayer = (function (_super) {
         return canvas;
     };
     GLayer.prototype.draw = function () {
-        var _this = this;
         if (this.CLEAR_CANVAS_EACH_CYCLE) {
             this.ctx.clearRect(0, 0, this.width, this.height);
         }
         this.ctx.translate(-this.viewX, -this.viewY);
+        this.ctx.save();
+        this.ctx.scale(this.width / this.viewWidth, this.height / this.viewHeight);
+        this.insideDraw();
+        this.ctx.restore();
+    };
+    GLayer.prototype.insideDraw = function () {
+        var _this = this;
         this.each(function (child, childId) {
             var currentInstance = child;
             currentInstance.draw(_this.ctx);
@@ -170,24 +183,54 @@ var GLayer = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(GLayer.prototype, "viewWidth", {
+        get: function () {
+            return this._viewWidth;
+        },
+        set: function (wView) {
+            var newWidth = Math.abs(wView);
+            if (newWidth > 0) {
+                this._viewWidth = wView;
+            }
+            else {
+                console.error("Glayer.viewWidth - must be larger 0(try set to " + newWidth + ")");
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GLayer.prototype, "viewHeight", {
+        get: function () {
+            return this._viewHeight;
+        },
+        set: function (hView) {
+            var newHeight = Math.abs(hView);
+            if (newHeight > 0) {
+                this._viewHeight = hView;
+            }
+            else {
+                console.error("Glayer.viewHeight - must be larger 0(try set to " + newHeight + ")");
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     return GLayer;
 }(GCollection));
 var coll = new GLayer(document.body, "gameLayer", 300, 300);
 var _loop_1 = function (i) {
     coll.add({
         update: function (dTime) {
-            console.log("viewX ", this.parrent.viewX);
         },
         draw: function (ctx) {
-            ctx.fillText(String(i), i * 32, 32);
+            ctx.strokeRect(i * 10, i * 10, 10, 10);
+            ctx.fillText(String(i), i * 10, i * 10 + 10);
         }
     });
 };
-for (var i = 1; i < 10; i++) {
+for (var i = 0; i < 10; i++) {
     _loop_1(i);
 }
-coll.viewX = 100;
-console.log(coll.viewX);
-coll.update(5);
-coll.draw();
+coll.viewWidth = 100;
+coll.viewHeight = 150;
 //# sourceMappingURL=galera.js.map

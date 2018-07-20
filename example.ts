@@ -7,18 +7,22 @@
 
 const coll: GLayer = new GLayer(document.body, "gameLayer", 300, 300);
 
-for(let i = 1; i < 10; i++){
+for(let i = 0; i < 10; i++){
     coll.add(<GLayerInstance>{
             update: function(dTime: number){
-                console.log("viewX ",this.parrent.viewX);
+                //console.log("viewX ",this.parrent.viewX);
             },
             draw: (ctx: CanvasRenderingContext2D)=>{
-                ctx.fillText(String(i), i*32, 32);
+                ctx.strokeRect(i*10, i*10, 10, 10);
+                ctx.fillText(String(i), i*10, i*10 + 10);
             }
         })
 }
 
-coll.viewX = 100;
-console.log(coll.viewX);
-coll.update(5);
-coll.draw();
+coll.viewWidth = 100;
+coll.viewHeight = 150;
+
+//console.log(coll.viewX);
+//coll.update(5);
+//coll.draw();
+
