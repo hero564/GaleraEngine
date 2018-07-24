@@ -19,8 +19,34 @@ for(let i = 0; i < 10; i++){
         })
 }
 
-coll.viewWidth = 100;
-coll.viewHeight = 150;
+coll.CLEAR_CANVAS_EACH_CYCLE = true;
+//coll.viewWidth =150;
+//coll.viewHeight =150;
+
+const but1: HTMLButtonElement = <HTMLButtonElement>document.getElementById("actionButt1");
+const but2: HTMLButtonElement = <HTMLButtonElement>document.getElementById("actionButt2");
+const but3: HTMLButtonElement = <HTMLButtonElement>document.getElementById("actionButt3");
+const but4: HTMLButtonElement = <HTMLButtonElement>document.getElementById("actionButt4");
+2
+but1.onclick = ()=>{
+    coll.viewX -= 1;
+};
+
+but2.onclick = ()=>{
+    coll.viewX   += 1;
+};
+
+but3.onclick = ()=>{
+    coll.viewWidth   -= 10;
+};
+
+but4.onclick = ()=>{
+    coll.viewWidth   += 10;
+};
+
+setInterval(()=>{
+    coll.draw();
+}, 1000/30);
 
 //console.log(coll.viewX);
 //coll.update(5);

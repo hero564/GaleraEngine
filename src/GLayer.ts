@@ -188,7 +188,7 @@ class GLayer extends GCollection {
    * Call every child draw() function.
    * For drawing thisngs.
    * Be true for calling this function after GLayer.update() or async
-   *  TODO: Correct camera view scaling(compabiling with camera mooving)
+   * TODO: Correct camera view scaling(compabiling with camera mooving)
    *
    * @memberof GLayer
    */
@@ -198,15 +198,23 @@ class GLayer extends GCollection {
       this.ctx.clearRect(0, 0, this.width, this.height);
     }
 
+    //Save context state before drawing
+    this.ctx.save();
+
+    /**
+     * Scaling camera
+     * Scale function must be before any transformation,
+     * or its transforms not will be scaled.
+     */
+    this.ctx.scale(this.width / this.viewWidth, this.height / this.viewHeight);
+
     //positioning camera
     this.ctx.translate(-this.viewX, -this.viewY);
 
-    //scaling camera
-    this.ctx.save();
-    this.ctx.scale(this.width / this.viewWidth, this.height / this.viewHeight);
-
+    //User drawings
     this.insideDraw();
-    
+
+    //Restore context state after drawing
     this.ctx.restore();
     
   }

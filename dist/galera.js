@@ -86,9 +86,9 @@ var GLayer = (function (_super) {
         if (this.CLEAR_CANVAS_EACH_CYCLE) {
             this.ctx.clearRect(0, 0, this.width, this.height);
         }
-        this.ctx.translate(-this.viewX, -this.viewY);
         this.ctx.save();
         this.ctx.scale(this.width / this.viewWidth, this.height / this.viewHeight);
+        this.ctx.translate(-this.viewX, -this.viewY);
         this.insideDraw();
         this.ctx.restore();
     };
@@ -231,6 +231,25 @@ var _loop_1 = function (i) {
 for (var i = 0; i < 10; i++) {
     _loop_1(i);
 }
-coll.viewWidth = 100;
-coll.viewHeight = 150;
+coll.CLEAR_CANVAS_EACH_CYCLE = true;
+var but1 = document.getElementById("actionButt1");
+var but2 = document.getElementById("actionButt2");
+var but3 = document.getElementById("actionButt3");
+var but4 = document.getElementById("actionButt4");
+2;
+but1.onclick = function () {
+    coll.viewX -= 1;
+};
+but2.onclick = function () {
+    coll.viewX += 1;
+};
+but3.onclick = function () {
+    coll.viewWidth -= 10;
+};
+but4.onclick = function () {
+    coll.viewWidth += 10;
+};
+setInterval(function () {
+    coll.draw();
+}, 1000 / 30);
 //# sourceMappingURL=galera.js.map
