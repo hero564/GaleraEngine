@@ -99,6 +99,15 @@ class GLayer extends GCollection {
   private _viewHeight: number = 1;
 
   /**
+   *Camera angle
+   *
+   * @private
+   * @type {number}
+   * @memberof GLayer
+   */
+  private _angle: number = 0;
+
+  /**
    * If this flag is true, on each begining of draw cycle canvas will be cleared.
    * FALSE by default.
    *
@@ -207,6 +216,9 @@ class GLayer extends GCollection {
      * or its transforms not will be scaled.
      */
     this.ctx.scale(this.width / this.viewWidth, this.height / this.viewHeight);
+
+    //transform degs to rads and rotate camera
+    this.ctx.rotate(this.angle * Math.PI/180);
 
     //positioning camera
     this.ctx.translate(-this.viewX, -this.viewY);
@@ -434,5 +446,24 @@ class GLayer extends GCollection {
    */
   get viewHeight(): number{
     return this._viewHeight;
+  }
+
+  /**
+   *Set camera view angle in degreese
+   *
+   * @memberof GLayer
+   */
+  set angle(degreese: number){
+    this._angle = degreese;
+  }
+
+  /**
+   *Get camera view in degree
+   *
+   * @type {number}
+   * @memberof GLayer
+   */
+  get angle(): number{
+    return this._angle;
   }
 }

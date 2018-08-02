@@ -27,6 +27,8 @@ const but1: HTMLButtonElement = <HTMLButtonElement>document.getElementById("acti
 const but2: HTMLButtonElement = <HTMLButtonElement>document.getElementById("actionButt2");
 const but3: HTMLButtonElement = <HTMLButtonElement>document.getElementById("actionButt3");
 const but4: HTMLButtonElement = <HTMLButtonElement>document.getElementById("actionButt4");
+const but5: HTMLButtonElement = <HTMLButtonElement>document.getElementById("actionButt5");
+const but6: HTMLButtonElement = <HTMLButtonElement>document.getElementById("actionButt6");
 2
 but1.onclick = ()=>{
     coll.viewX -= 1;
@@ -37,11 +39,24 @@ but2.onclick = ()=>{
 };
 
 but3.onclick = ()=>{
-    coll.viewWidth   -= 10;
+    coll.viewY -= 1;
 };
 
 but4.onclick = ()=>{
-    coll.viewWidth   += 10;
+    coll.viewY   += 1;
+};
+
+but5.onclick = ()=>{
+    //coll.viewWidth   -= 10;
+    coll.angle -= 5;
+    console.log(coll.angle);
+
+};
+
+but6.onclick = ()=>{
+    //coll.viewWidth   += 10;
+    coll.angle +=5;
+    console.log(coll.angle);
 };
 
 setInterval(()=>{

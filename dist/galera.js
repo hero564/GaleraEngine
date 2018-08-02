@@ -59,6 +59,7 @@ var GLayer = (function (_super) {
         _this._viewY = 0;
         _this._viewWidth = 1;
         _this._viewHeight = 1;
+        _this._angle = 0;
         _this.CLEAR_CANVAS_EACH_CYCLE = false;
         _this._root = root;
         _this._id = id;
@@ -88,6 +89,7 @@ var GLayer = (function (_super) {
         }
         this.ctx.save();
         this.ctx.scale(this.width / this.viewWidth, this.height / this.viewHeight);
+        this.ctx.rotate(this.angle * Math.PI / 180);
         this.ctx.translate(-this.viewX, -this.viewY);
         this.insideDraw();
         this.ctx.restore();
@@ -215,6 +217,16 @@ var GLayer = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(GLayer.prototype, "angle", {
+        get: function () {
+            return this._angle;
+        },
+        set: function (degreese) {
+            this._angle = degreese;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return GLayer;
 }(GCollection));
 var coll = new GLayer(document.body, "gameLayer", 300, 300);
@@ -236,18 +248,28 @@ var but1 = document.getElementById("actionButt1");
 var but2 = document.getElementById("actionButt2");
 var but3 = document.getElementById("actionButt3");
 var but4 = document.getElementById("actionButt4");
+var but5 = document.getElementById("actionButt5");
+var but6 = document.getElementById("actionButt6");
 2;
-but1.onclick = function () {
+but1.onmousedown = function () {
     coll.viewX -= 1;
 };
-but2.onclick = function () {
+but2.onmousedown = function () {
     coll.viewX += 1;
 };
 but3.onclick = function () {
-    coll.viewWidth -= 10;
+    coll.viewY -= 1;
 };
 but4.onclick = function () {
-    coll.viewWidth += 10;
+    coll.viewY += 1;
+};
+but5.onclick = function () {
+    coll.angle -= 5;
+    console.log(coll.angle);
+};
+but6.onclick = function () {
+    coll.angle += 5;
+    console.log(coll.angle);
 };
 setInterval(function () {
     coll.draw();
