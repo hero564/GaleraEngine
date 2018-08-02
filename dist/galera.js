@@ -60,6 +60,7 @@ var GLayer = (function (_super) {
         _this._viewWidth = 1;
         _this._viewHeight = 1;
         _this._angle = 0;
+        _this._alpha = 1;
         _this.CLEAR_CANVAS_EACH_CYCLE = false;
         _this._root = root;
         _this._id = id;
@@ -91,6 +92,7 @@ var GLayer = (function (_super) {
         this.ctx.scale(this.width / this.viewWidth, this.height / this.viewHeight);
         this.ctx.rotate(this.angle * Math.PI / 180);
         this.ctx.translate(-this.viewX, -this.viewY);
+        this.ctx.globalAlpha = this._alpha;
         this.insideDraw();
         this.ctx.restore();
     };
@@ -227,6 +229,24 @@ var GLayer = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(GLayer.prototype, "alpha", {
+        get: function () {
+            return this._alpha;
+        },
+        set: function (opacity) {
+            if (opacity > 1) {
+                this._alpha = 1;
+            }
+            else if (opacity <= 0) {
+                this._alpha = 0;
+            }
+            else {
+                this._alpha = opacity;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     return GLayer;
 }(GCollection));
 var coll = new GLayer(document.body, "gameLayer", 300, 300);
@@ -251,10 +271,10 @@ var but4 = document.getElementById("actionButt4");
 var but5 = document.getElementById("actionButt5");
 var but6 = document.getElementById("actionButt6");
 2;
-but1.onmousedown = function () {
+but1.onclick = function () {
     coll.viewX -= 1;
 };
-but2.onmousedown = function () {
+but2.onclick = function () {
     coll.viewX += 1;
 };
 but3.onclick = function () {
@@ -264,12 +284,12 @@ but4.onclick = function () {
     coll.viewY += 1;
 };
 but5.onclick = function () {
-    coll.angle -= 5;
-    console.log(coll.angle);
+    coll.alpha -= 0.1;
+    console.log(coll.alpha);
 };
 but6.onclick = function () {
-    coll.angle += 5;
-    console.log(coll.angle);
+    coll.alpha += 0.1;
+    console.log(coll.alpha);
 };
 setInterval(function () {
     coll.draw();

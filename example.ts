@@ -43,20 +43,20 @@ but3.onclick = ()=>{
 };
 
 but4.onclick = ()=>{
-    coll.viewY   += 1;
+    coll.viewY  += 1;
 };
 
 but5.onclick = ()=>{
     //coll.viewWidth   -= 10;
-    coll.angle -= 5;
-    console.log(coll.angle);
+    coll.alpha -= 0.1;
+    console.log(coll.alpha);
 
 };
 
 but6.onclick = ()=>{
     //coll.viewWidth   += 10;
-    coll.angle +=5;
-    console.log(coll.angle);
+    coll.alpha +=0.1;
+    console.log(coll.alpha);
 };
 
 setInterval(()=>{

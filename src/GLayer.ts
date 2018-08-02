@@ -108,6 +108,15 @@ class GLayer extends GCollection {
   private _angle: number = 0;
 
   /**
+   *Layer transparrency
+   *
+   * @private
+   * @type {number}
+   * @memberof GLayer
+   */
+  private _alpha: number = 1;
+
+  /**
    * If this flag is true, on each begining of draw cycle canvas will be cleared.
    * FALSE by default.
    *
@@ -222,6 +231,9 @@ class GLayer extends GCollection {
 
     //positioning camera
     this.ctx.translate(-this.viewX, -this.viewY);
+
+    //layer opacity
+    this.ctx.globalAlpha = this._alpha;
 
     //User drawings
     this.insideDraw();
@@ -428,7 +440,7 @@ class GLayer extends GCollection {
    * @memberof GLayer
    */
   set viewHeight(hView: number){
-    //cant be smaller 0
+    //cant be eq 0
     let newHeight: number = Math.abs(hView);
     //check on eq 0
     if(newHeight > 0){
@@ -465,5 +477,26 @@ class GLayer extends GCollection {
    */
   get angle(): number{
     return this._angle;
+  }
+
+  /**
+   *Layer opacity. Range from 0 to 1
+   *
+   * @memberof GLayer
+   */
+  set alpha(opacity: number){
+    //max value is 1
+    if(opacity > 1){
+      this._alpha = 1;
+    }else if(opacity <=0){
+      //min value is 0
+      this._alpha = 0;
+    }else{
+      this._alpha = opacity;
+    }
+  }
+
+  get alpha(): number{
+    return this._alpha;
   }
 }
