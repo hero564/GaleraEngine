@@ -406,6 +406,56 @@ class GLayer extends GCollection {
   }
 
   /**
+   * Setter for view center X position
+   *
+   * @memberof GLayer
+   */
+  set viewCenterX(centerX: number){
+    
+    let newPos: number = centerX - (this.viewWidth/2);
+
+    this.viewX = newPos;
+
+  }
+
+  /**
+   * Getter for view center X position
+   *
+   * @type {number}
+   * @memberof GLayer
+   */
+  get viewCenterX(): number{
+
+    return this.viewX - this.viewWidth / 2;
+
+  }
+
+  /**
+   * Setter for view center Y position
+   *
+   * @memberof GLayer
+   */
+  set viewCenterY(centerY: number){
+    
+    let newPos: number = centerY - (this.viewHeight/2);
+
+    this.viewY = newPos;
+
+  }
+
+  /**
+   * Getter for view center Y position
+   *
+   * @type {number}
+   * @memberof GLayer
+   */
+  get viewCenterY(): number{
+
+    return this.viewY - this.viewHeight / 2;
+
+  }
+
+  /**
    * Camera width setter.
    * Must be larger than 0.
    * If smaller than 0, will be used Math.abs(newValue)
